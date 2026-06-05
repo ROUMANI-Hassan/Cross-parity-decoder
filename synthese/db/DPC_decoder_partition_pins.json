@@ -1,0 +1,101 @@
+{
+	"partitions" : [
+		{
+			"name" : "Top",
+			"pins" : [
+				{
+					"name" : "D_out[0]",
+					"strict" : false
+				},
+				{
+					"name" : "D_out[1]",
+					"strict" : false
+				},
+				{
+					"name" : "D_out[2]",
+					"strict" : false
+				},
+				{
+					"name" : "D_out[3]",
+					"strict" : false
+				},
+				{
+					"name" : "D_out[4]",
+					"strict" : false
+				},
+				{
+					"name" : "D_out[5]",
+					"strict" : false
+				},
+				{
+					"name" : "D_out[6]",
+					"strict" : false
+				},
+				{
+					"name" : "D_out[7]",
+					"strict" : false
+				},
+				{
+					"name" : "Irq_DPC_n",
+					"strict" : false
+				},
+				{
+					"name" : "Addr[0]",
+					"strict" : false
+				},
+				{
+					"name" : "Addr[1]",
+					"strict" : false
+				},
+				{
+					"name" : "Wr",
+					"strict" : false
+				},
+				{
+					"name" : "D_in[0]",
+					"strict" : false
+				},
+				{
+					"name" : "Clk",
+					"strict" : false
+				},
+				{
+					"name" : "Reset_n",
+					"strict" : false
+				},
+				{
+					"name" : "Rd",
+					"strict" : false
+				},
+				{
+					"name" : "D_in[5]",
+					"strict" : false
+				},
+				{
+					"name" : "D_in[1]",
+					"strict" : false
+				},
+				{
+					"name" : "D_in[2]",
+					"strict" : false
+				},
+				{
+					"name" : "D_in[3]",
+					"strict" : false
+				},
+				{
+					"name" : "D_in[4]",
+					"strict" : false
+				},
+				{
+					"name" : "D_in[6]",
+					"strict" : false
+				},
+				{
+					"name" : "D_in[7]",
+					"strict" : false
+				}
+			]
+		}
+	]
+}
