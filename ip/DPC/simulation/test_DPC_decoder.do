@@ -12,8 +12,8 @@ if {[file exists work]} { vdel -lib work -all }
 vlib work
 vmap work work
 
-vcom -2008 "FIFO_nMots_mBits.vhd"
-vcom -2008 "DPC_decoder.vhd"
+vcom -2008 "../FIFO_nMots_mBits.vhd"
+vcom -2008 "../DPC_decoder.vhd"
 
 vsim -voptargs=+acc work.DPC_decoder
 
