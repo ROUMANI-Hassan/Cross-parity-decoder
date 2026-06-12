@@ -1,6 +1,5 @@
 	DE0_CV_QSYS u0 (
 		.clk_clk                 (<connected-to-clk_clk>),                 //              clk.clk
-		.clk_sdram_clk           (<connected-to-clk_sdram_clk>),           //        clk_sdram.clk
 		.keys_wire_export        (<connected-to-keys_wire_export>),        //        keys_wire.export
 		.leds_wire_export        (<connected-to-leds_wire_export>),        //        leds_wire.export
 		.pll_locked_export       (<connected-to-pll_locked_export>),       //       pll_locked.export

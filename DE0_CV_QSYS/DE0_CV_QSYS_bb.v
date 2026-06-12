@@ -1,7 +1,6 @@
 
 module DE0_CV_QSYS (
 	clk_clk,
-	clk_sdram_clk,
 	keys_wire_export,
 	leds_wire_export,
 	pll_locked_export,
@@ -19,7 +18,6 @@ module DE0_CV_QSYS (
 	switches_wire_export);	
 
 	input		clk_clk;
-	output		clk_sdram_clk;
 	input	[3:0]	keys_wire_export;
 	output	[9:0]	leds_wire_export;
 	output		pll_locked_export;

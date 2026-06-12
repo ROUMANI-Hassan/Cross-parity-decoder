@@ -1,7 +1,6 @@
 	component DE0_CV_QSYS is
 		port (
 			clk_clk                 : in    std_logic                     := 'X';             -- clk
-			clk_sdram_clk           : out   std_logic;                                        -- clk
 			keys_wire_export        : in    std_logic_vector(3 downto 0)  := (others => 'X'); -- export
 			leds_wire_export        : out   std_logic_vector(9 downto 0);                     -- export
 			pll_locked_export       : out   std_logic;                                        -- export
@@ -23,7 +22,6 @@
 	u0 : component DE0_CV_QSYS
 		port map (
 			clk_clk                 => CONNECTED_TO_clk_clk,                 --              clk.clk
-			clk_sdram_clk           => CONNECTED_TO_clk_sdram_clk,           --        clk_sdram.clk
 			keys_wire_export        => CONNECTED_TO_keys_wire_export,        --        keys_wire.export
 			leds_wire_export        => CONNECTED_TO_leds_wire_export,        --        leds_wire.export
 			pll_locked_export       => CONNECTED_TO_pll_locked_export,       --       pll_locked.export
