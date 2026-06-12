@@ -21,3 +21,8 @@ cov*/
 transcript*
 sc_dpiheader.h
 vsim.dbg
+
+db/
+incremental_db/
+simulation/
+output_files/
