@@ -12,11 +12,12 @@ functions, and any output files from any of the foregoing
 associated documentation or information are expressly subject 
 to the terms and conditions of the Intel Program License 
 Subscription Agreement, the Intel Quartus Prime License Agreement,
-the Intel FPGA IP License Agreement, or other applicable license
-agreement, including, without limitation, that your use is for
-the sole purpose of programming logic devices manufactured by
-Intel and sold by Intel or its authorized distributors.  Please
-refer to the applicable agreement for further details.
+the Intel MegaCore Function License Agreement, or other 
+applicable license agreement, including, without limitation, 
+that your use is for the sole purpose of programming logic 
+devices manufactured by Intel and sold by Intel or its 
+authorized distributors.  Please refer to the applicable 
+agreement for further details.
 */
 (header "symbol" (version "1.1"))
 (symbol
@@ -160,7 +161,7 @@ refer to the applicable agreement for further details.
 		(text "export" (rect 165 395 366 800)(font "Arial" (color 0 0 0)))
 		(text "switches_wire" (rect 77 411 232 835)(font "Arial" (color 128 0 0)(font_size 9)))
 		(text "export" (rect 165 435 366 880)(font "Arial" (color 0 0 0)))
-		(text " system " (rect 365 456 778 922)(font "Arial" ))
+		(text " DE0_CV_QSYS " (rect 325 456 728 922)(font "Arial" ))
 		(line (pt 160 32)(pt 240 32)(line_width 1))
 		(line (pt 240 32)(pt 240 456)(line_width 1))
 		(line (pt 160 456)(pt 240 456)(line_width 1))

@@ -72,8 +72,8 @@ add_interface_port clock Clk clk Input 1
 # connection point reset
 # 
 add_interface reset reset end
-set_interface_property reset associatedClock clock
-set_interface_property reset synchronousEdges DEASSERT
+set_interface_property reset associatedClock none
+set_interface_property reset synchronousEdges none
 set_interface_property reset ENABLED true
 set_interface_property reset EXPORT_OF ""
 set_interface_property reset PORT_NAME_MAP ""

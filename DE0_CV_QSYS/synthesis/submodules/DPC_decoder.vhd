@@ -46,7 +46,7 @@ architecture rtl of DPC_decoder is
   constant C_ADDR_CONTROL : std_logic_vector(1 downto 0) := "01";
   constant C_ADDR_DATA    : std_logic_vector(1 downto 0) := "10";
 
-  -- Selon le tableau du sujet : Error/Corr/Done côté MSB et Decod côté LSB.
+  -- Error/Corr/Done 
   constant C_STATUS_DONE  : integer := 5;
   constant C_STATUS_CORR  : integer := 6;
   constant C_STATUS_ERROR : integer := 7;
@@ -65,7 +65,7 @@ architecture rtl of DPC_decoder is
   signal load_cnt  : integer range 0 to 8 := 0;
   signal write_cnt : integer range 0 to 7 := 0;
 
-  -- FIFO d'entrée
+  -- FIFO d'entree
   signal in_fifo_dout  : std_logic_vector(7 downto 0);
   signal in_fifo_level : std_logic_vector(3 downto 0);
   signal in_fifo_empty : std_logic;
@@ -132,7 +132,7 @@ architecture rtl of DPC_decoder is
 begin
 
   ---------------------------------------------------------------------------
-  -- FIFO entrée : remplie par le processeur via DPCDataIn, lue par la FSM
+  -- FIFO entree : remplie par le processeur via DPCDataIn, lue par la FSM
   ---------------------------------------------------------------------------
   u_fifo_in : FIFO_nMots_mBits
     generic map (DATA_WIDTH => 8, FIFO_SIZE => 3)
@@ -149,7 +149,7 @@ begin
     );
 
   ---------------------------------------------------------------------------
-  -- FIFO sortie : remplie par la FSM après décodage, lue par le processeur
+  -- FIFO sortie : remplie par la FSM apres decodage, lue par le processeur
   ---------------------------------------------------------------------------
   u_fifo_out : FIFO_nMots_mBits
     generic map (DATA_WIDTH => 8, FIFO_SIZE => 3)
@@ -165,7 +165,7 @@ begin
       FifoFull  => out_fifo_full
     );
 
-  -- Accès FIFO depuis Avalon
+  -- Acces FIFO depuis Avalon
   in_fifo_wr  <= '1' when (Wr = '1' and Addr = C_ADDR_DATA and state = S_IDLE) else '0';
   out_fifo_rd <= '1' when (Rd = '1' and Addr = C_ADDR_DATA and out_fifo_empty = '0') else '0';
 
@@ -187,20 +187,19 @@ begin
   ---------------------------------------------------------------------------
   -- Analyse combinatoire : recalcul par XOR, comparaison, décision
   ---------------------------------------------------------------------------
-  process(buffer_8x8, vpl_r, vpc_r, vpl_cal, vpc_cal, err_l, err_c, plm_r, plm_cal,
-          nb_err_l, nb_err_c, err_g)
+  process(buffer_8x8, vpl_r, vpc_r, vpl_cal, vpc_cal, err_l, err_c, plm_r, plm_cal, nb_err_l, nb_err_c, err_g)
     variable tmp_vpl : std_logic_vector(6 downto 0);
     variable tmp_vpc : std_logic_vector(6 downto 0);
     variable tmp_r_l : std_logic_vector(6 downto 0);
     variable tmp_r_c : std_logic_vector(6 downto 0);
   begin
-    -- Bits de parité reçus : dernière colonne et dernière ligne
+    -- Bits de parite : derniere colonne et derniere ligne
     for i in 0 to 6 loop
       tmp_r_l(i) := buffer_8x8(i)(7);
       tmp_r_c(i) := buffer_8x8(7)(i);
     end loop;
 
-    -- Parités recalculées sur les 7x7 bits utiles
+    -- Parites recalculees sur les 7x7 bits utiles
     for i in 0 to 6 loop
       tmp_vpl(i) := xor_reduce(buffer_8x8(i)(6 downto 0));
     end loop;
@@ -232,19 +231,19 @@ begin
     corr_en    <= '0';
     err_en     <= '0';
 
-    -- Cas 1 : aucune erreur détectée
+    -- Cas 1 : aucune erreur detecte
     if ((count_ones(tmp_vpl xor tmp_r_l) = 0) and
         (count_ones(tmp_vpc xor tmp_r_c) = 0) and
         ((xor_reduce(tmp_r_l & tmp_r_c) xor buffer_8x8(7)(7)) = '0')) then
       accept_raw <= '1';
 
-    -- Cas 2 : un bit utile faux, localisé par une ligne et une colonne
+    -- Cas 2 : un bit utile faux, localise par une ligne et une colonne
     elsif ((count_ones(tmp_vpl xor tmp_r_l) = 1) and
            (count_ones(tmp_vpc xor tmp_r_c) = 1) and
            ((xor_reduce(tmp_r_l & tmp_r_c) xor buffer_8x8(7)(7)) = '0')) then
       corr_en <= '1';
 
-    -- Cas 3 : erreur sur bit de parité uniquement, données utiles acceptées telles quelles
+    -- Cas 3 : erreur sur bit de parite uniquement, donnees utiles acceptes telles quelles
     elsif (((count_ones(tmp_vpl xor tmp_r_l) + count_ones(tmp_vpc xor tmp_r_c)) <= 1) and
            ((xor_reduce(tmp_r_l & tmp_r_c) xor buffer_8x8(7)(7)) = '1')) then
       accept_raw <= '1';
@@ -256,7 +255,7 @@ begin
   end process;
 
   ---------------------------------------------------------------------------
-  -- FSM séquentielle
+  -- FSM sequentielle
   ---------------------------------------------------------------------------
   process(Clk, Reset_n)
   begin
@@ -271,7 +270,7 @@ begin
     elsif rising_edge(Clk) then
       state <= next_state;
 
-      -- Écriture du registre de contrôle par Avalon
+      -- Écriture du registre de cont?�le par Avalon
       if (Wr = '1' and Addr = C_ADDR_CONTROL) then
         dpc_control(C_CTRL_DECOD) <= D_in(C_CTRL_DECOD);
         dpc_control(C_CTRL_IRQEN) <= D_in(C_CTRL_IRQEN);
@@ -306,7 +305,7 @@ begin
           null;
 
         when S_CORR =>
-          -- Correction du bit utile à l'intersection ligne/colonne erronée
+          -- Correction du bit utile a� l'intersection ligne/colonne erronée
           buffer_8x8(idx_l)(idx_c) <= not buffer_8x8(idx_l)(idx_c);
           dpc_status(C_STATUS_CORR) <= '1';
 
@@ -344,7 +343,7 @@ begin
 
     case state is
       when S_IDLE =>
-        -- On attend Decod=1 ET FIFO pleine (8 mots chargés par l'utilisateur)
+        -- On attend Decod=1 ET FIFO pleine (8 mots charges par l'utilisateur)
         if (dpc_control(C_CTRL_DECOD) = '1' and in_fifo_full = '1') then
           out_fifo_init <= '1'; -- on vide l'ancienne FIFO de sortie
           next_state    <= S_LOAD_BUFFER;
@@ -381,13 +380,13 @@ begin
         end if;
 
       when S_ERROR =>
-        -- Erreur non corrigeable : aucune donnée n'est envoyée en sortie.
+        -- Erreur non corrigeable : aucune donnee n'est envoyee en sortie.
         out_fifo_init <= '1';
         next_state    <= S_DONE;
 
       when S_DONE =>
-        -- La FIFO d'entrée a été vidée par les 8 lectures de LOAD_BUFFER.
-        -- Retour IDLE ; Done reste à 1 jusqu'à lecture du status.
+        -- La FIFO d'entr�e a �t� vid�e par les 8 lectures de LOAD_BUFFER.
+        -- Retour IDLE ; Done reste � 1 jusqu'� lecture du status.us.
         next_state <= S_IDLE;
 
       when others =>
