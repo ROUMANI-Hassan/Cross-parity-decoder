@@ -1,0 +1,226 @@
+# ================================================================
+# test_DPC_decoder.do
+# Test ModelSim/Questa pour DPC_decoder.vhd + FIFO_nMots_mBits.vhd
+# Objectif : remplir FIFO, lancer Decod, observer FSM, buffer, analyse,
+#            correction, status, FIFO sortie et donnees lues.
+# ================================================================
+
+transcript on
+
+# Nettoyage + compilation
+if {[file exists work]} { vdel -lib work -all }
+vlib work
+vmap work work
+
+vcom -2008 "FIFO_nMots_mBits.vhd"
+vcom -2008 "DPC_decoder.vhd"
+
+vsim -voptargs=+acc work.DPC_decoder
+
+# ================================================================
+# AFFICHAGE DES SIGNAUX AVEC DIVIDERS
+# ================================================================
+quietly WaveActivateNextPane {} 0
+
+add wave -divider "===== INTERFACE AVALON / REGISTRES ====="
+add wave -radix binary  sim:/DPC_decoder/Clk
+add wave -radix binary  sim:/DPC_decoder/Reset_n
+add wave -radix binary  sim:/DPC_decoder/Wr
+add wave -radix binary  sim:/DPC_decoder/Rd
+add wave -radix unsigned sim:/DPC_decoder/Addr
+add wave -radix hex     sim:/DPC_decoder/D_in
+add wave -radix hex     sim:/DPC_decoder/D_out
+add wave -radix binary  sim:/DPC_decoder/Irq_DPC_n
+add wave -radix binary  sim:/DPC_decoder/dpc_control
+add wave -radix binary  sim:/DPC_decoder/dpc_status
+
+add wave -divider "===== FSM / COMPTEURS ====="
+add wave -radix symbolic sim:/DPC_decoder/state
+add wave -radix symbolic sim:/DPC_decoder/next_state
+add wave -radix unsigned sim:/DPC_decoder/load_cnt
+add wave -radix unsigned sim:/DPC_decoder/write_cnt
+
+add wave -divider "===== FIFO ENTREE : DONNEES RECUES PAR LE DPC ====="
+add wave -radix hex      sim:/DPC_decoder/u_fifo_in/Fifo
+add wave -radix hex      sim:/DPC_decoder/in_fifo_dout
+add wave -radix unsigned sim:/DPC_decoder/in_fifo_level
+add wave -radix binary   sim:/DPC_decoder/in_fifo_empty
+add wave -radix binary   sim:/DPC_decoder/in_fifo_full
+add wave -radix binary   sim:/DPC_decoder/in_fifo_wr
+add wave -radix binary   sim:/DPC_decoder/in_fifo_rd
+add wave -radix binary   sim:/DPC_decoder/in_fifo_init
+
+add wave -divider "===== BUFFER 8x8 : MATRICE CHARGEE DEPUIS FIFO ====="
+add wave -radix hex sim:/DPC_decoder/buffer_8x8
+add wave -radix hex sim:/DPC_decoder/buffer_8x8(0)
+add wave -radix hex sim:/DPC_decoder/buffer_8x8(1)
+add wave -radix hex sim:/DPC_decoder/buffer_8x8(2)
+add wave -radix hex sim:/DPC_decoder/buffer_8x8(3)
+add wave -radix hex sim:/DPC_decoder/buffer_8x8(4)
+add wave -radix hex sim:/DPC_decoder/buffer_8x8(5)
+add wave -radix hex sim:/DPC_decoder/buffer_8x8(6)
+add wave -radix hex sim:/DPC_decoder/buffer_8x8(7)
+
+add wave -divider "===== ANALYSE PARITE : VECTEURS RECUS/CALCULES ====="
+add wave -radix binary   sim:/DPC_decoder/vpl_r
+add wave -radix binary   sim:/DPC_decoder/vpl_cal
+add wave -radix binary   sim:/DPC_decoder/vpc_r
+add wave -radix binary   sim:/DPC_decoder/vpc_cal
+add wave -radix binary   sim:/DPC_decoder/plm_r
+add wave -radix binary   sim:/DPC_decoder/plm_cal
+add wave -radix binary   sim:/DPC_decoder/err_l
+add wave -radix binary   sim:/DPC_decoder/err_c
+add wave -radix binary   sim:/DPC_decoder/err_g
+add wave -radix unsigned sim:/DPC_decoder/nb_err_l
+add wave -radix unsigned sim:/DPC_decoder/nb_err_c
+add wave -radix unsigned sim:/DPC_decoder/idx_l
+add wave -radix unsigned sim:/DPC_decoder/idx_c
+
+add wave -divider "===== DECISION COMBINATOIRE ====="
+add wave -radix binary sim:/DPC_decoder/accept_raw
+add wave -radix binary sim:/DPC_decoder/corr_en
+add wave -radix binary sim:/DPC_decoder/err_en
+
+add wave -divider "===== FIFO SORTIE : DONNEES RENVOYEES AU SYSTEME ====="
+add wave -radix hex      sim:/DPC_decoder/out_fifo_din
+add wave -radix hex      sim:/DPC_decoder/out_fifo_dout
+add wave -radix unsigned sim:/DPC_decoder/out_fifo_level
+add wave -radix binary   sim:/DPC_decoder/out_fifo_empty
+add wave -radix binary   sim:/DPC_decoder/out_fifo_full
+add wave -radix binary   sim:/DPC_decoder/out_fifo_wr
+add wave -radix binary   sim:/DPC_decoder/out_fifo_rd
+add wave -radix binary   sim:/DPC_decoder/out_fifo_init
+add wave -radix hex      sim:/DPC_decoder/u_fifo_out/Fifo
+
+configure wave -namecolwidth 260
+configure wave -valuecolwidth 120
+configure wave -justifyvalue left
+
+# ================================================================
+# HORLOGE + PROCEDURES UTILES
+# ================================================================
+force -freeze sim:/DPC_decoder/Clk 0 0 ns, 1 20 ns -repeat 40 ns
+
+proc init_inputs {} {
+    force sim:/DPC_decoder/Wr      0
+    force sim:/DPC_decoder/Rd      0
+    force sim:/DPC_decoder/Addr    00
+    force sim:/DPC_decoder/D_in    16#00
+}
+
+proc reset_dut {} {
+    echo "\n--- RESET DUT ---"
+    force sim:/DPC_decoder/Reset_n 0
+    init_inputs
+    run 100 ns
+    force sim:/DPC_decoder/Reset_n 1
+    run 80 ns
+}
+
+proc write_reg {addr data comment} {
+    echo [format "WRITE Addr=%s Data=0x%s  %s" $addr $data $comment]
+    force sim:/DPC_decoder/Addr $addr
+    force sim:/DPC_decoder/D_in 16#$data
+    force sim:/DPC_decoder/Wr 1
+    run 40 ns
+    force sim:/DPC_decoder/Wr 0
+    run 40 ns
+}
+
+proc read_reg {addr comment} {
+    echo [format "READ  Addr=%s  %s" $addr $comment]
+    force sim:/DPC_decoder/Addr $addr
+    force sim:/DPC_decoder/Rd 1
+    run 40 ns
+    force sim:/DPC_decoder/Rd 0
+    run 40 ns
+}
+
+proc write_matrix {m0 m1 m2 m3 m4 m5 m6 m7} {
+    # Addr=10 correspond a DPCDataIn / DPCDataOut
+    write_reg 10 $m0 "ligne 0"
+    write_reg 10 $m1 "ligne 1"
+    write_reg 10 $m2 "ligne 2"
+    write_reg 10 $m3 "ligne 3"
+    write_reg 10 $m4 "ligne 4"
+    write_reg 10 $m5 "ligne 5"
+    write_reg 10 $m6 "ligne 6"
+    write_reg 10 $m7 "ligne 7 = parite colonnes + globale"
+}
+
+proc launch_decode {} {
+    # DPCControl : bit0 Decod=1, bit5 IrqEn=1 => 0x21
+    write_reg 01 21 "DPCControl : IrqEn=1, Decod=1"
+    run 900 ns
+    read_reg 00 "lecture DPCStatus : efface Done/Corr/Error apres lecture"
+    run 120 ns
+}
+
+proc read_output_fifo {} {
+    echo "Lecture des 7 mots utiles dans DPCDataOut"
+    read_reg 10 "data out 0"
+    read_reg 10 "data out 1"
+    read_reg 10 "data out 2"
+    read_reg 10 "data out 3"
+    read_reg 10 "data out 4"
+    read_reg 10 "data out 5"
+    read_reg 10 "data out 6"
+    run 120 ns
+}
+
+# ================================================================
+# MATRICE DE REFERENCE ENCODEE 8x8
+# Donnees utiles 7x7 + bit de parite ligne en bit7.
+# Derniere ligne = parites colonnes bits[6:0] + parite globale bit7.
+# Reference sans erreur : 55 33 71 8E CC AA 17 68
+# ================================================================
+
+# ------------------------------------------------
+# TEST 1 : aucune erreur => accept_raw=1, Corr=0, Error=0, Done=1
+# ------------------------------------------------
+reset_dut
+add wave -divider "===== TEST 1 : MATRICE SANS ERREUR ====="
+echo "\n================ TEST 1 : SANS ERREUR ================"
+write_matrix 55 33 71 8E CC AA 17 68
+launch_decode
+read_output_fifo
+
+# ------------------------------------------------
+# TEST 2 : une erreur dans donnees utiles
+# Exemple : ligne 2, colonne 3 : 0x71 xor 0x08 = 0x79
+# Attendu : corr_en=1, Corr=1, data sortie corrigee = ligne 2 redevient 0x71 utile.
+# ------------------------------------------------
+reset_dut
+add wave -divider "===== TEST 2 : 1 ERREUR UTILE CORRIGEE ====="
+echo "\n================ TEST 2 : 1 ERREUR UTILE ================"
+write_matrix 55 33 79 8E CC AA 17 68
+launch_decode
+read_output_fifo
+
+# ------------------------------------------------
+# TEST 3 : une erreur sur un bit de parite ligne
+# Exemple : ligne 3 bit7 : 0x8E xor 0x80 = 0x0E
+# Attendu : accept_raw=1, Corr=0, Error=0, les donnees utiles sont envoyees.
+# ------------------------------------------------
+reset_dut
+add wave -divider "===== TEST 3 : 1 ERREUR PARITE, DONNEES ACCEPTEES ====="
+echo "\n================ TEST 3 : 1 ERREUR PARITE ================"
+write_matrix 55 33 71 0E CC AA 17 68
+launch_decode
+read_output_fifo
+
+# ------------------------------------------------
+# TEST 4 : deux erreurs utiles => err_en=1, Error=1, pas de donnees envoyees
+# Exemple : ligne 1 col0 et ligne 2 col3.
+# ------------------------------------------------
+reset_dut
+add wave -divider "===== TEST 4 : ERREUR NON CORRIGEABLE ====="
+echo "\n================ TEST 4 : 2 ERREURS UTILES ================"
+write_matrix 55 32 79 8E CC AA 17 68
+launch_decode
+read_reg 10 "tentative lecture DPCDataOut : FIFO sortie doit rester vide"
+
+wave zoom full
+run 200 ns
+
+echo "\nFIN DES TESTS. Observe surtout : state, buffer_8x8, vpl/vpc, err_l/err_c/err_g, accept_raw/corr_en/err_en, dpc_status, u_fifo_out/Fifo."

@@ -1,0 +1,168 @@
+transcript on
+onerror {resume}
+
+restart -f
+
+echo "=================================================="
+echo " TEST 1 : Double erreur dans les donnees"
+echo "=================================================="
+
+force Clk 0 0ns, 1 20ns -repeat 40ns
+force Reset_n 0
+run 100ns
+force Reset_n 1
+
+# Chargement matrice avec plusieurs erreurs
+force D_in 16#55#
+force Wr 1
+run 40ns
+
+force D_in 16#33#
+run 40ns
+
+force D_in 16#71#
+run 40ns
+
+force D_in 16#0E#
+run 40ns
+
+force D_in 16#4C#
+run 40ns
+
+force D_in 16#2A#
+run 40ns
+
+force D_in 16#17#
+run 40ns
+
+force D_in 16#68#
+run 40ns
+
+force Wr 0
+
+# Lancement decode
+force Decod 1
+run 2000ns
+force Decod 0
+
+echo "Verifier : Error=1 Corr=0"
+
+run 500ns
+
+echo "=================================================="
+echo " TEST 2 : Bit global faux"
+echo "=================================================="
+
+restart -f
+
+force Clk 0 0ns, 1 20ns -repeat 40ns
+force Reset_n 0
+run 100ns
+force Reset_n 1
+
+force Wr 1
+
+force D_in 16#55#
+run 40ns
+
+force D_in 16#32#
+run 40ns
+
+force D_in 16#79#
+run 40ns
+
+force D_in 16#8E#
+run 40ns
+
+force D_in 16#CC#
+run 40ns
+
+force D_in 16#AA#
+run 40ns
+
+force D_in 16#17#
+run 40ns
+
+# modification uniquement du bit global
+force D_in 16#69#
+run 40ns
+
+force Wr 0
+
+force Decod 1
+run 2000ns
+force Decod 0
+
+echo "Verifier : Corr=0 Error=0"
+
+run 500ns
+
+echo "=================================================="
+echo " TEST 3 : Matrice totalement corrompue"
+echo "=================================================="
+
+restart -f
+
+force Clk 0 0ns, 1 20ns -repeat 40ns
+force Reset_n 0
+run 100ns
+force Reset_n 1
+
+force Wr 1
+
+force D_in 16#FF#
+run 40ns
+
+force D_in 16#FF#
+run 40ns
+
+force D_in 16#FF#
+run 40ns
+
+force D_in 16#FF#
+run 40ns
+
+force D_in 16#FF#
+run 40ns
+
+force D_in 16#FF#
+run 40ns
+
+force D_in 16#FF#
+run 40ns
+
+force D_in 16#FF#
+run 40ns
+
+force Wr 0
+
+force Decod 1
+run 2000ns
+force Decod 0
+
+echo "Verifier : Error=1"
+
+run 500ns
+
+echo "=================================================="
+echo " TEST 4 : FIFO vide + Decod"
+echo "=================================================="
+
+restart -f
+
+force Clk 0 0ns, 1 20ns -repeat 40ns
+force Reset_n 0
+run 100ns
+force Reset_n 1
+
+force Decod 1
+run 1000ns
+force Decod 0
+
+echo "Verifier FSM reste IDLE"
+
+run 500ns
+
+echo "=================================================="
+echo " FIN DES TESTS"
+echo "=================================================="

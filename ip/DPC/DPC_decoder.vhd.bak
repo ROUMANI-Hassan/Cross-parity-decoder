@@ -343,7 +343,7 @@ begin
 
     case state is
       when S_IDLE =>
-        -- On attend Decod=1 ET FIFO pleine (8 mots charges par l'utilisateur)
+        -- On attend Decod=1 ET FIFO pleine (8 mots chargés par l'utilisateur)
         if (dpc_control(C_CTRL_DECOD) = '1' and in_fifo_full = '1') then
           out_fifo_init <= '1'; -- on vide l'ancienne FIFO de sortie
           next_state    <= S_LOAD_BUFFER;
@@ -380,7 +380,7 @@ begin
         end if;
 
       when S_ERROR =>
-        -- Erreur non corrigeable : aucune donnee n'est envoyee en sortie.
+        -- Erreur non corrigeable : aucune donnée n'est envoyée en sortie.
         out_fifo_init <= '1';
         next_state    <= S_DONE;
 
