@@ -83,7 +83,7 @@ signal sdram_dqm : std_logic_vector(1 downto 0);
 component DE0_CV_QSYS is
         port (
             clk_clk                 : in    std_logic                     := 'X';             -- clk
-            clk_sdram_clk           : out   std_logic;                                        -- clk
+            -- clk_sdram_clk           : out   std_logic;                                        -- clk
             keys_wire_export        : in    std_logic_vector(3 downto 0)  := (others => 'X'); -- export
             leds_wire_export        : out   std_logic_vector(9 downto 0);                     -- export
             pll_locked_export       : out   std_logic;                                        -- export
@@ -119,7 +119,7 @@ DRAM_LDQM <= sdram_dqm(0);
 u0 : component DE0_CV_QSYS
 	port map (
 		clk_clk              => CLOCK_50,
-		clk_sdram_clk        => DRAM_CLK,
+		-- clk_sdram_clk        => DRAM_CLK,
 		keys_wire_export     => KEY,
 		leds_wire_export     => LEDR,
 		pll_locked_export    => pll_locked,
