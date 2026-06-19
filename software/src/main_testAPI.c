@@ -1,105 +1,89 @@
 #include <stdio.h>
+#include <stdint.h>
 #include "system.h"
-#include "alt_types.h"
-#include "dpc_regs.h"
 #include "dpcAPI.h"
 
-#ifndef DPC_0_BASE
-#warning "Replace DPC_0_BASE with the actual base macro from system.h"
-#define DPC_0_BASE 0
+#ifndef USERDPC_BASE
+#error "USERDPC_BASE is not defined in system.h. Check the generated BSP macro name for UserDPC."
 #endif
 
-#define DPC_BASE DPC_0_BASE
-#define DPC_BLOCK_SIZE 8
+#define DPC_TIMEOUT 10000u
 
-static void print_block(const char *name, const alt_u8 *data, alt_u32 len)
+static void print_status(const char *label, dpc_status_t st)
 {
-    alt_u32 i;
-    printf("%s\n", name);
-    for (i = 0; i < len; i++) {
-        printf("  [%lu] = 0x%02X (%3u)\n", (unsigned long)i, data[i], data[i]);
-    }
-}
-
-static void print_status_bits(alt_u8 status)
-{
-    printf("Status = 0x%02X | DONE=%u CORR=%u ERROR=%u\n",
-           status,
-           (status & DPC_STATUS_DONE_MSK) ? 1 : 0,
-           (status & DPC_STATUS_CORR_MSK) ? 1 : 0,
-           (status & DPC_STATUS_ERROR_MSK) ? 1 : 0);
-}
-
-static alt_u8 wait_done_and_get_status(alt_u32 base)
-{
-    alt_u8 status;
-    do {
-        status = dpc_read_status(base);
-    } while ((status & DPC_STATUS_DONE_MSK) == 0);
-    return status;
+    printf("%s 0x%02X\n", label, st.raw);
+    printf("  Done flag : %u\n", st.done);
+    printf("  Corr flag : %u\n", st.corr);
+    printf("  Error flag: %u\n", st.error);
 }
 
 int main(void)
 {
-    alt_u8 tx_block[DPC_BLOCK_SIZE] = {
-        0x55, 0x33, 0x0F, 0xA5,
-        0x5A, 0xC3, 0x7E, 0x81
+    uint32_t base = USERDPC_BASE;
+
+    uint8_t matrix_no_error[DPC_INPUT_BYTES] =
+    {
+        0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA
     };
 
-    alt_u8 rx_block[DPC_BLOCK_SIZE];
-    alt_u8 status;
-    alt_u32 i;
+    uint8_t data_out[DPC_OUTPUT_BYTES];
+    dpc_status_t initial_status;
+    dpc_status_t done_status;
+    dpc_status_t status_after_reread;
+    uint32_t i;
+    int rc;
 
-    printf("\n===== TEST API DPC =====\n");
+    printf("=== DPC Decoder Test ===\n");
+    printf("Base address: 0x%08X\n\n", (unsigned int)base);
 
-    printf("\n[1] Test lecture registre control/status\n");
-    status = dpc_read_status(DPC_BASE);
-    print_status_bits(status);
+    /* 1. Read initial status */
+    initial_status = dpcReadStatus(base);
+    print_status("Initial Status:", initial_status);
 
-    printf("\n[2] Test configuration interruption\n");
-    dpc_set_irq_enable(DPC_BASE, 0);
-    printf("IRQ disabled\n");
-    dpc_set_irq_enable(DPC_BASE, 1);
-    printf("IRQ enabled\n");
-    dpc_set_irq_enable(DPC_BASE, 0);
-    printf("IRQ disabled again\n");
-
-    printf("\n[3] Ecriture d'un bloc vers DPCDataIn\n");
-    print_block("Bloc emis :", tx_block, DPC_BLOCK_SIZE);
-    dpc_write_block(DPC_BASE, tx_block, DPC_BLOCK_SIZE);
-    printf("Write block done\n");
-
-    printf("\n[4] Lancement du decodage\n");
-    dpc_start_decode(DPC_BASE);
-    printf("Decode started\n");
-
-    printf("\n[5] Attente fin de traitement\n");
-    status = wait_done_and_get_status(DPC_BASE);
-    print_status_bits(status);
-
-    if (status & DPC_STATUS_ERROR_MSK) {
-        printf("Le decodeur signale une erreur non corrigeable.\n");
-    } else if (status & DPC_STATUS_CORR_MSK) {
-        printf("Le decodeur signale une correction effectuee.\n");
-    } else {
-        printf("Le decodeur signale aucune erreur connue.\n");
+    /* 2. Write known 8-byte matrix */
+    printf("\nWriting 8 bytes of matrix data (no error case)...\n");
+    for (i = 0; i < DPC_INPUT_BYTES; ++i) {
+        dpcWriteData(base, matrix_no_error[i]);
+        printf("  Wrote 0x%02X\n", matrix_no_error[i]);
     }
 
-    printf("\n[6] Lecture du bloc decode via DPCDataOut\n");
-    dpc_read_block(DPC_BASE, rx_block, DPC_BLOCK_SIZE);
-    print_block("Bloc recu :", rx_block, DPC_BLOCK_SIZE);
+    /* 3. Start decode */
+    printf("\nStarting decoding (set Decod bit)...\n");
+    dpcStartDecode(base);
 
-    printf("\n[7] Comparaison emission / reception\n");
-    for (i = 0; i < DPC_BLOCK_SIZE; i++) {
-        if (tx_block[i] == rx_block[i]) {
-            printf("  [%lu] OK  0x%02X\n", (unsigned long)i, rx_block[i]);
-        } else {
-            printf("  [%lu] DIFF TX=0x%02X RX=0x%02X\n",
-                   (unsigned long)i, tx_block[i], rx_block[i]);
+    /* 4. Wait for Done */
+    printf("Waiting for Done flag...\n");
+    rc = dpcWaitDone(base, DPC_TIMEOUT, &done_status);
+
+    if (rc != 0) {
+        printf("Timeout! Done not set.\n");
+        printf("\n=== Test completed ===\n");
+        return 0;
+    }
+
+    printf("Done detected.\n");
+
+    /* 5. Show final status captured when Done was seen */
+    print_status("Final Status:", done_status);
+
+    /* 6. Read output bytes if no uncorrectable error */
+    if (done_status.error == 1u) {
+        printf("Uncorrectable error detected. No data will be read.\n");
+    } else {
+        printf("Reading output data (7 bytes):\n");
+        for (i = 0; i < DPC_OUTPUT_BYTES; ++i) {
+            data_out[i] = dpcReadData(base);
+            printf("  Byte %u: 0x%02X\n", (unsigned int)i, data_out[i]);
         }
     }
 
-    printf("\n===== FIN TEST API DPC =====\n");
+    /* 7. Optional check: Done should be cleared by a new status read */
+    printf("\nReading status again after completion...\n");
+    status_after_reread = dpcReadStatus(base);
+    print_status("Status after reread:", status_after_reread);
+
+    printf("\n=== Test completed ===\n");
+
     while (1) {
     }
 

@@ -2,10 +2,10 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>5 juin 2026 10:36:32</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1780648592232</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>C:\Users\wqgec\Documents\Labo_CSP\mini-projet\DE0_CV_25MHz\software\bsp</BspGeneratedLocation>
-        <BspSettingsFile>.\settings.bsp</BspSettingsFile>
+        <BspGeneratedTimeStamp>Jun 19, 2026 4:46:39 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1781880399398</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>Z:\VHDL\csp\Cross-parity-decoder\software\bsp</BspGeneratedLocation>
+        <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\DE0_CV_QSYS.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>nios2_qsys</Cpu>
@@ -905,6 +905,12 @@
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
+                <slaveDescriptor>UserDPC</slaveDescriptor>
+                <addressRange>0x04000000 - 0x04000003</addressRange>
+                <addressSpan>4</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
                 <slaveDescriptor>onchip_mem</slaveDescriptor>
                 <addressRange>0x05020000 - 0x0503F3FF</addressRange>
                 <addressSpan>128000</addressSpan>
@@ -932,24 +938,6 @@
                 <slaveDescriptor>leds</slaveDescriptor>
                 <addressRange>0x05050000 - 0x0505001F</addressRange>
                 <addressSpan>32</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>sd_cmd</slaveDescriptor>
-                <addressRange>0x05050110 - 0x0505011F</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>sd_clk</slaveDescriptor>
-                <addressRange>0x05060000 - 0x0506000F</addressRange>
-                <addressSpan>16</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
-                <slaveDescriptor>sd_dat</slaveDescriptor>
-                <addressRange>0x05060010 - 0x0506001F</addressRange>
-                <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>

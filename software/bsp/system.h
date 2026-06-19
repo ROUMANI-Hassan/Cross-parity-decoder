@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_qsys' in SOPC Builder design 'DE0_CV_QSYS'
  * SOPC Builder design path: ../../DE0_CV_QSYS.sopcinfo
  *
- * Generated: Fri Jun 05 10:23:17 CEST 2026
+ * Generated: Fri Jun 19 16:45:04 CEST 2026
  */
 
 /*
@@ -140,6 +140,7 @@
 #define __ALTERA_AVALON_SYSID_QSYS
 #define __ALTERA_AVALON_TIMER
 #define __ALTERA_NIOS2_GEN2
+#define __DPC_2
 
 
 /*
@@ -176,6 +177,20 @@
 #define ALT_STDOUT_PRESENT
 #define ALT_STDOUT_TYPE "altera_avalon_jtag_uart"
 #define ALT_SYSTEM_NAME "DE0_CV_QSYS"
+
+
+/*
+ * UserDPC configuration
+ *
+ */
+
+#define ALT_MODULE_CLASS_UserDPC DPC_2
+#define USERDPC_BASE 0x4000000
+#define USERDPC_IRQ 3
+#define USERDPC_IRQ_INTERRUPT_CONTROLLER_ID 0
+#define USERDPC_NAME "/dev/UserDPC"
+#define USERDPC_SPAN 4
+#define USERDPC_TYPE "DPC_2"
 
 
 /*
@@ -291,87 +306,6 @@
 
 
 /*
- * sd_clk configuration
- *
- */
-
-#define ALT_MODULE_CLASS_sd_clk altera_avalon_pio
-#define SD_CLK_BASE 0x5060000
-#define SD_CLK_BIT_CLEARING_EDGE_REGISTER 0
-#define SD_CLK_BIT_MODIFYING_OUTPUT_REGISTER 0
-#define SD_CLK_CAPTURE 0
-#define SD_CLK_DATA_WIDTH 1
-#define SD_CLK_DO_TEST_BENCH_WIRING 0
-#define SD_CLK_DRIVEN_SIM_VALUE 0
-#define SD_CLK_EDGE_TYPE "NONE"
-#define SD_CLK_FREQ 25087719
-#define SD_CLK_HAS_IN 0
-#define SD_CLK_HAS_OUT 1
-#define SD_CLK_HAS_TRI 0
-#define SD_CLK_IRQ -1
-#define SD_CLK_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define SD_CLK_IRQ_TYPE "NONE"
-#define SD_CLK_NAME "/dev/sd_clk"
-#define SD_CLK_RESET_VALUE 0
-#define SD_CLK_SPAN 16
-#define SD_CLK_TYPE "altera_avalon_pio"
-
-
-/*
- * sd_cmd configuration
- *
- */
-
-#define ALT_MODULE_CLASS_sd_cmd altera_avalon_pio
-#define SD_CMD_BASE 0x5050110
-#define SD_CMD_BIT_CLEARING_EDGE_REGISTER 0
-#define SD_CMD_BIT_MODIFYING_OUTPUT_REGISTER 0
-#define SD_CMD_CAPTURE 0
-#define SD_CMD_DATA_WIDTH 1
-#define SD_CMD_DO_TEST_BENCH_WIRING 0
-#define SD_CMD_DRIVEN_SIM_VALUE 0
-#define SD_CMD_EDGE_TYPE "NONE"
-#define SD_CMD_FREQ 25087719
-#define SD_CMD_HAS_IN 0
-#define SD_CMD_HAS_OUT 0
-#define SD_CMD_HAS_TRI 1
-#define SD_CMD_IRQ -1
-#define SD_CMD_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define SD_CMD_IRQ_TYPE "NONE"
-#define SD_CMD_NAME "/dev/sd_cmd"
-#define SD_CMD_RESET_VALUE 0
-#define SD_CMD_SPAN 16
-#define SD_CMD_TYPE "altera_avalon_pio"
-
-
-/*
- * sd_dat configuration
- *
- */
-
-#define ALT_MODULE_CLASS_sd_dat altera_avalon_pio
-#define SD_DAT_BASE 0x5060010
-#define SD_DAT_BIT_CLEARING_EDGE_REGISTER 0
-#define SD_DAT_BIT_MODIFYING_OUTPUT_REGISTER 0
-#define SD_DAT_CAPTURE 0
-#define SD_DAT_DATA_WIDTH 4
-#define SD_DAT_DO_TEST_BENCH_WIRING 0
-#define SD_DAT_DRIVEN_SIM_VALUE 0
-#define SD_DAT_EDGE_TYPE "NONE"
-#define SD_DAT_FREQ 25087719
-#define SD_DAT_HAS_IN 0
-#define SD_DAT_HAS_OUT 0
-#define SD_DAT_HAS_TRI 1
-#define SD_DAT_IRQ -1
-#define SD_DAT_IRQ_INTERRUPT_CONTROLLER_ID -1
-#define SD_DAT_IRQ_TYPE "NONE"
-#define SD_DAT_NAME "/dev/sd_dat"
-#define SD_DAT_RESET_VALUE 0
-#define SD_DAT_SPAN 16
-#define SD_DAT_TYPE "altera_avalon_pio"
-
-
-/*
  * sdram configuration
  *
  */
@@ -476,7 +410,7 @@
 #define SYSID_QSYS_IRQ_INTERRUPT_CONTROLLER_ID -1
 #define SYSID_QSYS_NAME "/dev/sysid_qsys"
 #define SYSID_QSYS_SPAN 8
-#define SYSID_QSYS_TIMESTAMP 1663874776
+#define SYSID_QSYS_TIMESTAMP 1781875609
 #define SYSID_QSYS_TYPE "altera_avalon_sysid_qsys"
 
 
