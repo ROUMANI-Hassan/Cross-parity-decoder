@@ -1,152 +1,111 @@
+#include <stdio.h>
 #include "dpcAPI.h"
-#include "dpc_regs.h"
 
-uint8_t dpcReadStatusRaw(uint32_t base)
+char DPCInit(unsigned long BaseAddress)
 {
-    return IORD_DPC_STATUS(base);
+    IOWRDPCCONTROL(BaseAddress, 0x00);
+    if (IORDDPCCONTROL(BaseAddress) != 0x00) {
+        printf("Error Function DPCInit Cannot initialize DPC control register.\n");
+        return (char)-1;
+    }
+    return (char)0;
 }
 
-uint8_t dpcReadControl(uint32_t base)
+unsigned char DPCStatus(unsigned long BaseAddress)
 {
-    return IORD_DPC_CONTROL(base);
+    return IORDDPCSTATUS(BaseAddress);
 }
 
-void dpcWriteControl(uint32_t base, uint8_t value)
+char DPCIsDone(unsigned long BaseAddress)
 {
-    IOWR_DPC_CONTROL(base, value);
+    return (char)((IORDDPCSTATUS(BaseAddress) & DPCSTATUSDONEMSK) ? 1 : 0);
 }
 
-uint8_t dpcReadData(uint32_t base)
+char DPCIsCorr(unsigned long BaseAddress)
 {
-    return IORD_DPC_DATA(base);
+    return (char)((IORDDPCSTATUS(BaseAddress) & DPCSTATUSCORRMSK) ? 1 : 0);
 }
 
-void dpcWriteData(uint32_t base, uint8_t value)
+char DPCIsError(unsigned long BaseAddress)
 {
-    IOWR_DPC_DATA(base, value);
+    return (char)((IORDDPCSTATUS(BaseAddress) & DPCSTATUSERRORMSK) ? 1 : 0);
 }
 
-dpc_status_t dpcReadStatus(uint32_t base)
+char DPCStart(unsigned long BaseAddress)
 {
-    dpc_status_t st;
+    unsigned char ControlValue;
 
-    st.raw   = dpcReadStatusRaw(base);
-    st.done  = (st.raw & DPC_STATUS_DONE_MSK)  ? 1u : 0u;
-    st.corr  = (st.raw & DPC_STATUS_CORR_MSK)  ? 1u : 0u;
-    st.error = (st.raw & DPC_STATUS_ERROR_MSK) ? 1u : 0u;
+    ControlValue = IORDDPCCONTROL(BaseAddress);
+    ControlValue |= DPCCONTROLDECODMSK;
+    IOWRDPCCONTROL(BaseAddress, ControlValue);
 
-    return st;
-}
-
-void dpcClearControl(uint32_t base)
-{
-    dpcWriteControl(base, 0x00u);
-}
-
-void dpcEnableIrq(uint32_t base)
-{
-    uint8_t ctrl = dpcReadControl(base);
-    ctrl |= DPC_CONTROL_IRQEN_MSK;
-    dpcWriteControl(base, ctrl);
-}
-
-void dpcDisableIrq(uint32_t base)
-{
-    uint8_t ctrl = dpcReadControl(base);
-    ctrl &= (uint8_t)(~DPC_CONTROL_IRQEN_MSK);
-    dpcWriteControl(base, ctrl);
-}
-
-void dpcStartDecode(uint32_t base)
-{
-    uint8_t ctrl = dpcReadControl(base);
-    ctrl |= DPC_CONTROL_DECOD_MSK;
-    dpcWriteControl(base, ctrl);
-}
-
-void dpcWriteBlock(uint32_t base, const uint8_t *data, size_t len)
-{
-    size_t i;
-
-    if ((data == 0) || (len == 0u)) {
-        return;
+    if ((IORDDPCCONTROL(BaseAddress) & DPCCONTROLDECODMSK) != DPCCONTROLDECODMSK) {
+        printf("Error Function DPCStart Cannot start decoding.\n");
+        return (char)-1;
     }
 
-    for (i = 0; i < len; ++i) {
-        dpcWriteData(base, data[i]);
-    }
+    return (char)0;
 }
 
-void dpcReadBlock(uint32_t base, uint8_t *data, size_t len)
+void DPCIrqEnable(unsigned long BaseAddress)
 {
-    size_t i;
-
-    if ((data == 0) || (len == 0u)) {
-        return;
-    }
-
-    for (i = 0; i < len; ++i) {
-        data[i] = dpcReadData(base);
-    }
+    IOWRDPCCONTROL(BaseAddress, IORDDPCCONTROL(BaseAddress) | DPCCONTROLIRQENMSK);
 }
 
-int dpcWaitDone(uint32_t base, uint32_t timeout_loops, dpc_status_t *final_status)
+void DPCIrqDisable(unsigned long BaseAddress)
 {
-    uint32_t i;
-    dpc_status_t st;
-
-    for (i = 0; i < timeout_loops; ++i) {
-        st = dpcReadStatus(base);
-
-        if (st.done) {
-            if (final_status != 0) {
-                *final_status = st;
-            }
-            return 0;
-        }
-    }
-
-    if (final_status != 0) {
-        final_status->raw = 0u;
-        final_status->done = 0u;
-        final_status->corr = 0u;
-        final_status->error = 0u;
-    }
-
-    return -1;
+    IOWRDPCCONTROL(BaseAddress, IORDDPCCONTROL(BaseAddress) & ~DPCCONTROLIRQENMSK);
 }
 
-int dpcDecodeBlock(uint32_t base,
-                   const uint8_t in[DPC_INPUT_BYTES],
-                   uint8_t out[DPC_OUTPUT_BYTES],
-                   dpc_status_t *final_status,
-                   uint32_t timeout_loops)
+void DPCWriteData(unsigned long BaseAddress, unsigned char Data)
 {
-    dpc_status_t st;
+    IOWRDPCDATA(BaseAddress, Data);
+}
 
-    if ((in == 0) || (out == 0)) {
-        return -1;
+unsigned char DPCReadData(unsigned long BaseAddress)
+{
+    return IORDDPCDATA(BaseAddress);
+}
+
+char DPCWriteMatrix(unsigned long BaseAddress, const unsigned char *DataIn)
+{
+    int i;
+
+    for (i = 0; i < 8; i++) {
+        DPCWriteData(BaseAddress, DataIn[i]);
     }
 
-    dpcClearControl(base);
-    dpcWriteBlock(base, in, DPC_INPUT_BYTES);
-    dpcStartDecode(base);
+    return (char)0;
+}
 
-    if (dpcWaitDone(base, timeout_loops, &st) != 0) {
-        if (final_status != 0) {
-            *final_status = st;
-        }
-        return -2;
+char DPCReadOutput(unsigned long BaseAddress, unsigned char *DataOut)
+{
+    int i;
+
+    if (DPCIsError(BaseAddress)) {
+        printf("Error Function DPCReadOutput Output data invalid.\n");
+        return (char)-1;
     }
 
-    if (final_status != 0) {
-        *final_status = st;
+    for (i = 0; i < 7; i++) {
+        DataOut[i] = DPCReadData(BaseAddress);
     }
 
-    if (st.error) {
-        return -3;
+    return (char)0;
+}
+
+char DPCWaitDone(unsigned long BaseAddress, unsigned long Timeout)
+{
+    volatile unsigned long Count = 0;
+
+    while ((DPCIsDone(BaseAddress) == 0) && (Count < Timeout)) {
+        Count++;
     }
 
-    dpcReadBlock(base, out, DPC_OUTPUT_BYTES);
-    return 0;
+    if (Count >= Timeout) {
+        printf("Error Function DPCWaitDone Timeout waiting for Done flag.\n");
+        return (char)-1;
+    }
+
+    return (char)0;
 }
