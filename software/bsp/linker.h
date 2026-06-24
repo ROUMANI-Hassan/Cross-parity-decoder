@@ -4,7 +4,7 @@
  * Machine generated for CPU 'nios2_qsys' in SOPC Builder design 'DE0_CV_QSYS'
  * SOPC Builder design path: ../../DE0_CV_QSYS.sopcinfo
  *
- * Generated: Fri Jun 05 10:21:31 CEST 2026
+ * Generated: Sun Jun 21 13:16:03 CEST 2026
  */
 
 /*
@@ -80,9 +80,9 @@
 
 #define ALT_EXCEPTIONS_DEVICE ONCHIP_MEM
 #define ALT_RESET_DEVICE ONCHIP_MEM
-#define ALT_RODATA_DEVICE SDRAM
-#define ALT_RWDATA_DEVICE SDRAM
-#define ALT_TEXT_DEVICE SDRAM
+#define ALT_RODATA_DEVICE ONCHIP_MEM
+#define ALT_RWDATA_DEVICE ONCHIP_MEM
+#define ALT_TEXT_DEVICE ONCHIP_MEM
 
 
 /*

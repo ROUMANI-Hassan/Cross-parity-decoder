@@ -93,12 +93,12 @@ OBJ_DIR := ./obj
 
 # This following VERSION comment indicates the version of the tool used to 
 # generate this makefile. A makefile variable is provided for VERSION as well. 
-# ACDS_VERSION: 17.0
-ACDS_VERSION := 17.0
+# ACDS_VERSION: 17.1
+ACDS_VERSION := 17.1
 
 # This following BUILD_NUMBER comment indicates the build number of the tool 
 # used to generate this makefile. 
-# BUILD_NUMBER: 595
+# BUILD_NUMBER: 590
 
 SETTINGS_FILE := settings.bsp
 SOPC_FILE := ../../DE0_CV_QSYS.sopcinfo
@@ -207,6 +207,13 @@ GENERATED_C_LIB_SRCS += alt_sys_init.c
 # to construct a list of objects. Pattern rules to build each object are then
 # used to build each file.
 #-------------------------------------------------------------------------------
+
+# dpc_driver sources root 
+DPC_driver_SRCS_ROOT := drivers
+
+# dpc_driver sources 
+DPC_driver_C_LIB_SRCS := \
+	$(DPC_driver_SRCS_ROOT)/src/dpcAPI.c
 
 # altera_avalon_jtag_uart_driver sources root 
 altera_avalon_jtag_uart_driver_SRCS_ROOT := drivers
@@ -338,6 +345,7 @@ hal_C_LIB_SRCS := \
 
 # Assemble all component C source files 
 COMPONENT_C_LIB_SRCS += \
+	$(DPC_driver_C_LIB_SRCS) \
 	$(altera_avalon_jtag_uart_driver_C_LIB_SRCS) \
 	$(altera_avalon_sysid_qsys_driver_C_LIB_SRCS) \
 	$(altera_avalon_timer_driver_C_LIB_SRCS) \

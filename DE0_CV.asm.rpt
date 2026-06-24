@@ -1,6 +1,6 @@
 Assembler report for DE0_CV
-Fri Jun 19 15:31:31 2026
-Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
+Sun Jun 21 12:07:02 2026
+Quartus Prime Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
 
 
 ---------------------
@@ -11,8 +11,8 @@ Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
   3. Assembler Settings
   4. Assembler Encrypted IP Cores Summary
   5. Assembler Generated Files
-  6. Assembler Device Options: Z:/VHDL/csp/Cross-parity-decoder/DE0_CV.sof
-  7. Assembler Device Options: Z:/VHDL/csp/Cross-parity-decoder/DE0_CV.pof
+  6. Assembler Device Options: C:/Users/wqgec/Documents/Labo_CSP/mini-projet/Cross-parity-decoder/DE0_CV.sof
+  7. Assembler Device Options: C:/Users/wqgec/Documents/Labo_CSP/mini-projet/Cross-parity-decoder/DE0_CV.pof
   8. Assembler Messages
 
 
@@ -28,19 +28,18 @@ functions, and any output files from any of the foregoing
 associated documentation or information are expressly subject 
 to the terms and conditions of the Intel Program License 
 Subscription Agreement, the Intel Quartus Prime License Agreement,
-the Intel MegaCore Function License Agreement, or other 
-applicable license agreement, including, without limitation, 
-that your use is for the sole purpose of programming logic 
-devices manufactured by Intel and sold by Intel or its 
-authorized distributors.  Please refer to the applicable 
-agreement for further details.
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details.
 
 
 
 +---------------------------------------------------------------+
 ; Assembler Summary                                             ;
 +-----------------------+---------------------------------------+
-; Assembler Status      ; Successful - Fri Jun 19 15:31:31 2026 ;
+; Assembler Status      ; Successful - Sun Jun 21 12:07:02 2026 ;
 ; Revision Name         ; DE0_CV                                ;
 ; Top-level Entity Name ; DE0_CV_top                            ;
 ; Family                ; Cyclone V                             ;
@@ -65,35 +64,35 @@ agreement for further details.
 +--------+------------------------+--------------+
 
 
-+---------------------------------------------+
-; Assembler Generated Files                   ;
-+---------------------------------------------+
-; File Name                                   ;
-+---------------------------------------------+
-; Z:/VHDL/csp/Cross-parity-decoder/DE0_CV.sof ;
-; Z:/VHDL/csp/Cross-parity-decoder/DE0_CV.pof ;
-+---------------------------------------------+
++-------------------------------------------------------------------------------+
+; Assembler Generated Files                                                     ;
++-------------------------------------------------------------------------------+
+; File Name                                                                     ;
++-------------------------------------------------------------------------------+
+; C:/Users/wqgec/Documents/Labo_CSP/mini-projet/Cross-parity-decoder/DE0_CV.sof ;
+; C:/Users/wqgec/Documents/Labo_CSP/mini-projet/Cross-parity-decoder/DE0_CV.pof ;
++-------------------------------------------------------------------------------+
 
 
-+-----------------------------------------------------------------------+
-; Assembler Device Options: Z:/VHDL/csp/Cross-parity-decoder/DE0_CV.sof ;
-+----------------+------------------------------------------------------+
-; Option         ; Setting                                              ;
-+----------------+------------------------------------------------------+
-; JTAG usercode  ; 0x032C1737                                           ;
-; Checksum       ; 0x032C1737                                           ;
-+----------------+------------------------------------------------------+
++---------------------------------------------------------------------------------------------------------+
+; Assembler Device Options: C:/Users/wqgec/Documents/Labo_CSP/mini-projet/Cross-parity-decoder/DE0_CV.sof ;
++----------------+----------------------------------------------------------------------------------------+
+; Option         ; Setting                                                                                ;
++----------------+----------------------------------------------------------------------------------------+
+; JTAG usercode  ; 0x032C34D0                                                                             ;
+; Checksum       ; 0x032C34D0                                                                             ;
++----------------+----------------------------------------------------------------------------------------+
 
 
-+-----------------------------------------------------------------------+
-; Assembler Device Options: Z:/VHDL/csp/Cross-parity-decoder/DE0_CV.pof ;
-+--------------------+--------------------------------------------------+
-; Option             ; Setting                                          ;
-+--------------------+--------------------------------------------------+
-; JTAG usercode      ; 0x00000000                                       ;
-; Checksum           ; 0x720D1755                                       ;
-; Compression Ratio  ; 2                                                ;
-+--------------------+--------------------------------------------------+
++---------------------------------------------------------------------------------------------------------+
+; Assembler Device Options: C:/Users/wqgec/Documents/Labo_CSP/mini-projet/Cross-parity-decoder/DE0_CV.pof ;
++--------------------+------------------------------------------------------------------------------------+
+; Option             ; Setting                                                                            ;
++--------------------+------------------------------------------------------------------------------------+
+; JTAG usercode      ; 0x00000000                                                                         ;
+; Checksum           ; 0x722B3B12                                                                         ;
+; Compression Ratio  ; 2                                                                                  ;
++--------------------+------------------------------------------------------------------------------------+
 
 
 +--------------------+
@@ -101,15 +100,15 @@ agreement for further details.
 +--------------------+
 Info: *******************************************************************
 Info: Running Quartus Prime Assembler
-    Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Fri Jun 19 15:31:21 2026
+    Info: Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
+    Info: Processing started: Sun Jun 21 12:06:55 2026
 Info: Command: quartus_asm --read_settings_files=off --write_settings_files=off DE0_CV -c DE0_CV
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (115030): Assembler is generating device programming files
 Info: Quartus Prime Assembler was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 4867 megabytes
-    Info: Processing ended: Fri Jun 19 15:31:31 2026
-    Info: Elapsed time: 00:00:10
-    Info: Total CPU time (on all processors): 00:00:05
+    Info: Peak virtual memory: 4861 megabytes
+    Info: Processing ended: Sun Jun 21 12:07:03 2026
+    Info: Elapsed time: 00:00:08
+    Info: Total CPU time (on all processors): 00:00:07
 
 

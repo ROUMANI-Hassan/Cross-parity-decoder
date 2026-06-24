@@ -1,6 +1,6 @@
 Flow report for DE0_CV
-Fri Jun 19 15:31:46 2026
-Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
+Sun Jun 21 12:07:18 2026
+Quartus Prime Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
 
 
 ---------------------
@@ -29,27 +29,26 @@ functions, and any output files from any of the foregoing
 associated documentation or information are expressly subject 
 to the terms and conditions of the Intel Program License 
 Subscription Agreement, the Intel Quartus Prime License Agreement,
-the Intel MegaCore Function License Agreement, or other 
-applicable license agreement, including, without limitation, 
-that your use is for the sole purpose of programming logic 
-devices manufactured by Intel and sold by Intel or its 
-authorized distributors.  Please refer to the applicable 
-agreement for further details.
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details.
 
 
 
 +-------------------------------------------------------------------------------+
 ; Flow Summary                                                                  ;
 +---------------------------------+---------------------------------------------+
-; Flow Status                     ; Successful - Fri Jun 19 15:31:31 2026       ;
-; Quartus Prime Version           ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
+; Flow Status                     ; Successful - Sun Jun 21 12:07:02 2026       ;
+; Quartus Prime Version           ; 17.1.0 Build 590 10/25/2017 SJ Lite Edition ;
 ; Revision Name                   ; DE0_CV                                      ;
 ; Top-level Entity Name           ; DE0_CV_top                                  ;
 ; Family                          ; Cyclone V                                   ;
 ; Device                          ; 5CEBA4F23C7                                 ;
 ; Timing Models                   ; Final                                       ;
-; Logic utilization (in ALMs)     ; 1,548 / 18,480 ( 8 % )                      ;
-; Total registers                 ; 2057                                        ;
+; Logic utilization (in ALMs)     ; 1,545 / 18,480 ( 8 % )                      ;
+; Total registers                 ; 2059                                        ;
 ; Total pins                      ; 206 / 224 ( 92 % )                          ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 1,035,392 / 3,153,920 ( 33 % )              ;
@@ -68,7 +67,7 @@ agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 06/19/2026 15:27:42 ;
+; Start date & time ; 06/21/2026 12:03:12 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; DE0_CV              ;
 +-------------------+---------------------+
@@ -79,7 +78,7 @@ agreement for further details.
 +-------------------------------------+---------------------------------------------------------------+--------------------------------------+-------------+------------+
 ; Assignment Name                     ; Value                                                         ; Default Value                        ; Entity Name ; Section Id ;
 +-------------------------------------+---------------------------------------------------------------+--------------------------------------+-------------+------------+
-; COMPILER_SIGNATURE_ID               ; 40664268713880.178187566203652                                ; --                                   ; --          ; --         ;
+; COMPILER_SIGNATURE_ID               ; 216533924604221.178203619104336                               ; --                                   ; --          ; --         ;
 ; FITTER_EFFORT                       ; Standard Fit                                                  ; Auto Fit                             ; --          ; --         ;
 ; MAX_CORE_JUNCTION_TEMP              ; 85                                                            ; --                                   ; --          ; --         ;
 ; MIN_CORE_JUNCTION_TEMP              ; 0                                                             ; --                                   ; --          ; --         ;
@@ -98,7 +97,7 @@ agreement for further details.
 ; PROJECT_IP_REGENERATION_POLICY      ; ALWAYS_REGENERATE_IP                                          ; SKIP_REGENERATING_IP_IF_HDL_MODIFIED ; --          ; --         ;
 ; SLD_FILE                            ; DE0_CV_QSYS/synthesis/DE0_CV_QSYS.regmap                      ; --                                   ; --          ; --         ;
 ; SLD_FILE                            ; DE0_CV_QSYS/synthesis/DE0_CV_QSYS.debuginfo                   ; --                                   ; --          ; --         ;
-; SLD_INFO                            ; QSYS_NAME DE0_CV_QSYS HAS_SOPCINFO 1 GENERATION_ID 1781875609 ; --                                   ; DE0_CV_QSYS ; --         ;
+; SLD_INFO                            ; QSYS_NAME DE0_CV_QSYS HAS_SOPCINFO 1 GENERATION_ID 1782036127 ; --                                   ; DE0_CV_QSYS ; --         ;
 ; SOPCINFO_FILE                       ; DE0_CV_QSYS/synthesis/../../DE0_CV_QSYS.sopcinfo              ; --                                   ; --          ; --         ;
 ; SYNTHESIS_ONLY_QIP                  ; On                                                            ; --                                   ; --          ; --         ;
 ; TOP_LEVEL_ENTITY                    ; DE0_CV_top                                                    ; DE0_CV                               ; --          ; --         ;
@@ -110,11 +109,11 @@ agreement for further details.
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis      ; 00:00:33     ; 1.0                     ; 5090 MB             ; 00:00:35                           ;
-; Fitter                    ; 00:02:43     ; 1.1                     ; 7527 MB             ; 00:18:57                           ;
-; Assembler                 ; 00:00:10     ; 1.0                     ; 4867 MB             ; 00:00:04                           ;
-; TimeQuest Timing Analyzer ; 00:00:13     ; 2.0                     ; 5441 MB             ; 00:00:19                           ;
-; Total                     ; 00:03:39     ; --                      ; --                  ; 00:19:55                           ;
+; Analysis & Synthesis      ; 00:00:46     ; 1.0                     ; 5063 MB             ; 00:00:53                           ;
+; Fitter                    ; 00:02:48     ; 1.1                     ; 7055 MB             ; 00:11:09                           ;
+; Assembler                 ; 00:00:07     ; 1.0                     ; 4861 MB             ; 00:00:07                           ;
+; TimeQuest Timing Analyzer ; 00:00:15     ; 1.8                     ; 5366 MB             ; 00:00:24                           ;
+; Total                     ; 00:03:56     ; --                      ; --                  ; 00:12:33                           ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
@@ -123,10 +122,10 @@ agreement for further details.
 +---------------------------+------------------+------------+------------+----------------+
 ; Module Name               ; Machine Hostname ; OS Name    ; OS Version ; Processor type ;
 +---------------------------+------------------+------------+------------+----------------+
-; Analysis & Synthesis      ; C101-14W         ; Windows 10 ; 10.0       ; x86_64         ;
-; Fitter                    ; C101-14W         ; Windows 10 ; 10.0       ; x86_64         ;
-; Assembler                 ; C101-14W         ; Windows 10 ; 10.0       ; x86_64         ;
-; TimeQuest Timing Analyzer ; C101-14W         ; Windows 10 ; 10.0       ; x86_64         ;
+; Analysis & Synthesis      ; PC_Hassan        ; Windows 10 ; 10.0       ; x86_64         ;
+; Fitter                    ; PC_Hassan        ; Windows 10 ; 10.0       ; x86_64         ;
+; Assembler                 ; PC_Hassan        ; Windows 10 ; 10.0       ; x86_64         ;
+; TimeQuest Timing Analyzer ; PC_Hassan        ; Windows 10 ; 10.0       ; x86_64         ;
 +---------------------------+------------------+------------+------------+----------------+
 
 

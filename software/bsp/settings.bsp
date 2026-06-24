@@ -2,9 +2,9 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Jun 19, 2026 4:46:39 PM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1781880399398</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>Z:\VHDL\csp\Cross-parity-decoder\software\bsp</BspGeneratedLocation>
+        <BspGeneratedTimeStamp>Jun 21, 2026 1:16:03 PM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1782040563585</BspGeneratedUnixTimeStamp>
+        <BspGeneratedLocation>C:\Users\wqgec\Documents\Labo_CSP\mini-projet\Cross-parity-decoder\software\bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\DE0_CV_QSYS.sopcinfo</SopcDesignFile>
         <JdiFile>default</JdiFile>
@@ -960,26 +960,26 @@
         </MemoryMap>
         <LinkerSection>
                 <sectionName>.text</sectionName>
-                <regionName>sdram</regionName>
+                <regionName>onchip_mem</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.rodata</sectionName>
-                <regionName>sdram</regionName>
+                <regionName>onchip_mem</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.rwdata</sectionName>
-                <regionName>sdram</regionName>
+                <regionName>onchip_mem</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.bss</sectionName>
-                <regionName>sdram</regionName>
+                <regionName>onchip_mem</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.heap</sectionName>
-                <regionName>sdram</regionName>
+                <regionName>onchip_mem</regionName>
         </LinkerSection>
         <LinkerSection>
                 <sectionName>.stack</sectionName>
-                <regionName>sdram</regionName>
+                <regionName>onchip_mem</regionName>
         </LinkerSection>
 </sch:Settings>

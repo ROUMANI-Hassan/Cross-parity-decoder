@@ -17,18 +17,18 @@ preplace inst DE0_CV_QSYS.nios2_qsys -pg 1 -lvl 2 -y 80
 preplace inst DE0_CV_QSYS.jtag_uart -pg 1 -lvl 5 -y 30
 preplace inst DE0_CV_QSYS.UserDPC -pg 1 -lvl 4 -y 110
 preplace inst DE0_CV_QSYS -pg 1 -lvl 1 -y 40 -regy -20
+preplace netloc INTERCONNECT<net_container>DE0_CV_QSYS</net_container>(SLAVE)timer.s1,(SLAVE)sdram.s1,(MASTER)nios2_qsys.instruction_master,(SLAVE)UserDPC.avalon_slave_0,(SLAVE)leds.s1,(SLAVE)nios2_qsys.debug_mem_slave,(SLAVE)onchip_mem.s1,(SLAVE)jtag_uart.avalon_jtag_slave,(SLAVE)sysid_qsys.control_slave,(SLAVE)keys.s1,(SLAVE)switches.s1,(MASTER)nios2_qsys.data_master,(SLAVE)seg7_digits.s1) 1 1 4 180 240 830 110 1070 40 1320
 preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)keys.external_connection,(SLAVE)DE0_CV_QSYS.keys_wire) 1 0 5 NJ 260 NJ 260 NJ 260 NJ 260 NJ
-preplace netloc INTERCONNECT<net_container>DE0_CV_QSYS</net_container>(SLAVE)seg7_digits.reset,(SLAVE)pll.reset,(SLAVE)UserDPC.reset,(MASTER)clk_50.clk_reset,(SLAVE)sysid_qsys.reset,(SLAVE)timer.reset,(SLAVE)jtag_uart.reset,(SLAVE)switches.reset,(SLAVE)onchip_mem.reset1,(SLAVE)keys.reset,(SLAVE)leds.reset,(MASTER)nios2_qsys.debug_reset_request,(SLAVE)nios2_qsys.reset,(SLAVE)sdram.reset) 1 1 4 200 310 850 130 1090 100 1300
-preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)DE0_CV_QSYS.switches_wire,(SLAVE)switches.external_connection) 1 0 5 NJ 1080 NJ 1080 NJ 1080 NJ 1080 NJ
-preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)leds.external_connection,(SLAVE)DE0_CV_QSYS.leds_wire) 1 0 5 NJ 880 NJ 880 NJ 880 NJ 880 NJ
+preplace netloc POINT_TO_POINT<net_container>DE0_CV_QSYS</net_container>(MASTER)clk_50.clk,(SLAVE)pll.refclk) 1 2 1 870
+preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)DE0_CV_QSYS.sdram_wire,(SLAVE)sdram.wire) 1 0 5 NJ 1020 NJ 1020 NJ 1020 NJ 1020 NJ
+preplace netloc FAN_OUT<net_container>DE0_CV_QSYS</net_container>(SLAVE)switches.clk,(SLAVE)seg7_digits.clk,(SLAVE)sdram.clk,(SLAVE)leds.clk,(SLAVE)nios2_qsys.clk,(SLAVE)UserDPC.clock,(SLAVE)jtag_uart.clk,(SLAVE)onchip_mem.clk1,(SLAVE)timer.clk,(SLAVE)sysid_qsys.clk,(SLAVE)keys.clk,(MASTER)pll.outclk2) 1 1 4 160 220 NJ 220 1110 60 1360
 preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)DE0_CV_QSYS.pll_locked,(SLAVE)pll.locked) 1 0 3 NJ 290 NJ 290 NJ
-preplace netloc FAN_OUT<net_container>DE0_CV_QSYS</net_container>(SLAVE)timer.clk,(SLAVE)sdram.clk,(SLAVE)leds.clk,(SLAVE)keys.clk,(SLAVE)switches.clk,(SLAVE)nios2_qsys.clk,(SLAVE)jtag_uart.clk,(SLAVE)onchip_mem.clk1,(MASTER)pll.outclk2,(SLAVE)seg7_digits.clk,(SLAVE)sysid_qsys.clk,(SLAVE)UserDPC.clock) 1 1 4 160 220 NJ 220 1110 60 1360
+preplace netloc FAN_OUT<net_container>DE0_CV_QSYS</net_container>(SLAVE)jtag_uart.irq,(MASTER)nios2_qsys.irq,(SLAVE)UserDPC.interrupt_sender,(SLAVE)timer.irq,(SLAVE)keys.irq) 1 2 3 NJ 170 1050 80 1340
 preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)clk_50.clk_in_reset,(SLAVE)DE0_CV_QSYS.reset) 1 0 2 NJ 350 NJ
-preplace netloc POINT_TO_POINT<net_container>DE0_CV_QSYS</net_container>(SLAVE)pll.refclk,(MASTER)clk_50.clk) 1 2 1 870
-preplace netloc INTERCONNECT<net_container>DE0_CV_QSYS</net_container>(SLAVE)seg7_digits.s1,(SLAVE)onchip_mem.s1,(SLAVE)keys.s1,(MASTER)nios2_qsys.instruction_master,(SLAVE)jtag_uart.avalon_jtag_slave,(SLAVE)UserDPC.avalon_slave_0,(MASTER)nios2_qsys.data_master,(SLAVE)sdram.s1,(SLAVE)nios2_qsys.debug_mem_slave,(SLAVE)timer.s1,(SLAVE)switches.s1,(SLAVE)sysid_qsys.control_slave,(SLAVE)leds.s1) 1 1 4 180 240 830 110 1070 40 1320
-preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)sdram.wire,(SLAVE)DE0_CV_QSYS.sdram_wire) 1 0 5 NJ 1020 NJ 1020 NJ 1020 NJ 1020 NJ
-preplace netloc FAN_OUT<net_container>DE0_CV_QSYS</net_container>(SLAVE)keys.irq,(MASTER)nios2_qsys.irq,(SLAVE)timer.irq,(SLAVE)UserDPC.interrupt_sender,(SLAVE)jtag_uart.irq) 1 2 3 NJ 170 1050 80 1340
-preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)seg7_digits.external_connection,(SLAVE)DE0_CV_QSYS.seg7_digits_wire) 1 0 5 NJ 620 NJ 620 NJ 620 NJ 620 NJ
-preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)DE0_CV_QSYS.clk,(SLAVE)clk_50.clk_in) 1 0 2 NJ 330 NJ
+preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)clk_50.clk_in,(SLAVE)DE0_CV_QSYS.clk) 1 0 2 NJ 330 NJ
+preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)DE0_CV_QSYS.seg7_digits_wire,(SLAVE)seg7_digits.external_connection) 1 0 5 NJ 620 NJ 620 NJ 620 NJ 620 NJ
+preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)DE0_CV_QSYS.leds_wire,(SLAVE)leds.external_connection) 1 0 5 NJ 880 NJ 880 NJ 880 NJ 880 NJ
+preplace netloc INTERCONNECT<net_container>DE0_CV_QSYS</net_container>(SLAVE)timer.reset,(SLAVE)jtag_uart.reset,(SLAVE)UserDPC.reset,(SLAVE)onchip_mem.reset1,(MASTER)nios2_qsys.debug_reset_request,(MASTER)clk_50.clk_reset,(SLAVE)sysid_qsys.reset,(SLAVE)pll.reset,(SLAVE)switches.reset,(SLAVE)nios2_qsys.reset,(SLAVE)leds.reset,(SLAVE)sdram.reset,(SLAVE)keys.reset,(SLAVE)seg7_digits.reset) 1 1 4 200 310 850 130 1090 100 1300
+preplace netloc EXPORT<net_container>DE0_CV_QSYS</net_container>(SLAVE)switches.external_connection,(SLAVE)DE0_CV_QSYS.switches_wire) 1 0 5 NJ 1080 NJ 1080 NJ 1080 NJ 1080 NJ
 levelinfo -pg 1 0 110 1610
 levelinfo -hier DE0_CV_QSYS 120 140 590 920 1170 1450 1600
